@@ -5,23 +5,23 @@ pipeline {
         stage('Cleanup') {
             steps {
                 echo 'Limpando o workspace...'
-                // O Jenkins já faz uma limpeza básica, mas aqui podemos remover arquivos antigos ou imagens Docker.
-                sh 'docker image prune -f || true' // Remove imagens Docker não utilizadas
-                deleteDir() // Limpa o diretório de trabalho do Jenkins
+                // O Jenkins ja faz uma limpeza basica, mas aqui podemos remover arquivos antigos ou imagens Docker.
+                sh 'docker image prune -f || true' // Remove imagens Docker nao utilizadas
+                deleteDir() // Limpa o diretorio de trabalho do Jenkins
             }
         }
         stage('Checkout') {
             steps {
                 echo 'Baixando o código do GitHub...'
-                // A ação de checkout baixa o código do repositório configurado no job
+                // A acao de checkout baixa o codigo do repositorio configurado no job
                 git url: 'https://github.com/Gardinfe/atividade2.git', branch: 'main'
             }
         }
         stage('Construção (Build)') {
             steps {
-                echo 'Iniciando a construção das imagens Docker...'
+                echo 'Iniciando a construcao das imagens Docker...'
                 script {
-                    // Constrói a imagem Docker para a aplicação web
+                    // Constroi a imagem Docker para a aplicacao web
                     echo 'Construindo imagem para o serviço WEB...'
                     def webImage = docker.build('atividade2-web', './web')
                     echo "Imagem ${webImage.id} construída com sucesso."
