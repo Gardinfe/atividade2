@@ -2,5 +2,5 @@
 FROM postgres:13
 
 # Copiar o script de inicialização para o diretório correto.
-# A imagem do Postgres executa automaticamente qualquer .sql neste diretório.
-COPY init.sql /docker-entrypoint-initdb.d/
+# O nome do arquivo foi corrigido para corresponder ao seu repositório.
+COPY codigo.sql /docker-entrypoint-initdb.d/
