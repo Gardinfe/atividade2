@@ -1,10 +1,17 @@
-FROM python:3.12-slim
+FROM python:3.9-slim
 
+# Definir o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-COPY main.py .
-COPY requirements.txt
+# Copiar e instalar as dependências primeiro
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install -r requirements.txt
+# Copiar o código da aplicação
+COPY app.py .
 
-CMD ["python3", "main.py"]
+# Expor a porta da aplicação
+EXPOSE 5000
+
+# Comando para executar a aplicação
+CMD ["python", "app.py"]
