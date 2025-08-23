@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     // Variáveis de ambiente para o nome de usuário do Docker Hub
-    // É uma boa prática não deixar nomes de usuário hardcoded
     environment {
         DOCKERHUB_USER = 'gardinfernando'
     }
@@ -36,8 +35,8 @@ pipeline {
         stage('Entrega (Delivery)') {
             steps {
                 echo 'Enviando imagens para o Docker Hub...'
-                // O 'docker-hub-credentials' deve ser o ID da sua credencial configurada no Jenkins
-                withDockerRegistry(credentialsId: 'docker-hub-credentials') {
+                // CORREÇÃO: O ID da credencial foi ajustado para 'Docker_hub'
+                withDockerRegistry(credentialsId: 'Docker_hub') {
                     sh "docker push ${DOCKERHUB_USER}/atividade2-web"
                     sh "docker push ${DOCKERHUB_USER}/atividade2-db"
                 }
@@ -50,9 +49,6 @@ pipeline {
         }
         failure {
             echo 'A Pipeline falhou.'
-        }
-    }
-}
         }
     }
 }
