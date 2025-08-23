@@ -1,13 +1,14 @@
+# Usar uma imagem base oficial do Python
 FROM python:3.9-slim
 
 # Definir o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copiar e instalar as dependências primeiro
+# Copiar e instalar as dependências
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar o código da aplicação
+# Copiar o script da aplicação
 COPY app.py .
 
 # Expor a porta da aplicação
