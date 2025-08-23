@@ -36,7 +36,7 @@ pipeline {
             steps {
                 echo 'Enviando imagens para o Docker Hub...'
                 // CORREÇÃO: O ID da credencial foi ajustado para 'Docker_hub'
-                withDockerRegistry(credentialsId: 'Docker_hub') {
+                 withDockerRegistry(url: 'https://index.docker.io/v1/', credentialsId: 'Docker_hub') {
                     sh "docker push ${DOCKERHUB_USER}/atividade2-web"
                     sh "docker push ${DOCKERHUB_USER}/atividade2-db"
                 }
