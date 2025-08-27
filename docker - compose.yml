@@ -1,10 +1,23 @@
 services:
   db:
+    # A imagem é a que seu Jenkinsfile constrói a partir do Dockerfile.mysql 
     image: gardinfernando/atividade2-db
     container_name: atividade2-db
+    # Use as variáveis de ambiente para MySQL, conforme seu Dockerfile 
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: atividade02
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: atividade02
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     ports:
-      - "5432:5432"
+      - "3306:3306" # Porta padrão do MySQL
+
+  # Adicione também a definição do seu serviço web
+  web:
+    image: gardinfernando/atividade2-web
+    container_name: atividade2-web
+    ports:
+      - "5000:5000" # Porta da sua aplicação web (ex: Flask, Django)
+    # Garante que o banco de dados inicie antes da aplicação
+    depends_on:
+      - db
