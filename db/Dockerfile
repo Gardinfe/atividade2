@@ -1,6 +1,8 @@
-# Usar a imagem base oficial do PostgreSQL
-FROM postgres:13
+FROM mysql:8
 
-# Copiar o script de inicialização para o diretório correto.
-# O nome do arquivo foi corrigido para corresponder ao seu repositório.
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=atividade02
+ENV MYSQL_USER=user
+ENV MYSQL_PASSWORD=password
+
 COPY codigo.sql /docker-entrypoint-initdb.d/
