@@ -1,25 +1,10 @@
-version: "3.9"
 services:
   db:
     image: gardinfernando/atividade2-db
     container_name: atividade2-db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: atividade02
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: atividade02
     ports:
-      - "3306:3306"
-
-  web:
-    image: gardinfernando/atividade2-web
-    container_name: atividade2-web
-    depends_on:
-      - db
-    environment:
-      MYSQL_USERNAME: user
-      MYSQL_PASSWORD: password
-      MYSQL_ADDRESS: db:3306
-      MYSQL_DBNAME: atividade02
-    ports:
-      - "8200:8200"
+      - "5432:5432"
