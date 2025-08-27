@@ -6,3 +6,4 @@ ENV MYSQL_USER=user
 ENV MYSQL_PASSWORD=password
 
 COPY codigo.sql /docker-entrypoint-initdb.d/
+
