@@ -1,8 +1,10 @@
 FROM mysql:8
 
+# Variáveis de ambiente para inicialização do MySQL
 ENV MYSQL_ROOT_PASSWORD=root
 ENV MYSQL_DATABASE=atividade02
 ENV MYSQL_USER=user
 ENV MYSQL_PASSWORD=password
 
+# Copia o script SQL para inicializar o banco
 COPY codigo.sql /docker-entrypoint-initdb.d/
