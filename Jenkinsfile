@@ -9,7 +9,6 @@ pipeline {
         stage('Cleanup') {
             steps {
                 echo 'Limpando o workspace...'
-                // O -a remove todas as imagens não utilizadas, não apenas as pendentes
                 sh 'docker image prune -af || true'
                 deleteDir()
             }
@@ -24,11 +23,7 @@ pipeline {
             steps {
                 echo 'Iniciando a construção das imagens Docker...'
                 script {
-                    // Aponta para o Dockerfile do serviço WEB
                     docker.build("${DOCKERHUB_USER}/atividade2-web:latest", "-f ./web/Dockerfile.web ./web")
-                    
-                    // --- CORREÇÃO APLICADA AQUI ---
-                    // Aponta para o Dockerfile do serviço DB
                     docker.build("${DOCKERHUB_USER}/atividade2-db:latest", "-f ./db/Dockerfile.mysql ./db")
                 }
             }
@@ -36,10 +31,11 @@ pipeline {
         stage('Entrega (Delivery)') {
             steps {
                 echo 'Enviando imagens para o Docker Hub...'
-                // Usando a credencial 'Docker_hub' que você já configurou
-                withDockerRegistry(credentialsId: 'Docker_hub') {
-                    docker.image("${DOCKERHUB_USER}/atividade2-web:latest").push()
-                    docker.image("${DOCKERHUB_USER}/atividade2-db:latest").push()
+                // --- CORREÇÃO APLICADA AQUI ---
+                // Adicionado 'url' e trocado .push() por comandos sh
+                withDockerRegistry(url: 'https://index.docker.io/v1/', credentialsId: 'Docker_hub') {
+                    sh "docker push ${DOCKERHUB_USER}/atividade2-web:latest"
+                    sh "docker push ${DOCKERHUB_USER}/atividade2-db:latest"
                 }
             }
         }
