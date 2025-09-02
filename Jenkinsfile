@@ -41,7 +41,6 @@ pipeline {
             steps {
                 echo 'Iniciando o deploy no servidor de destino...'
                 sshagent(credentials: ['servidor-ssh']) { 
-                    // CORREÇÃO FINAL: Usando o usuário 'fernando'
                     sh '''
                         ssh -o StrictHostKeyChecking=no fernando@192.168.100.6 <<EOF
 
@@ -51,11 +50,11 @@ pipeline {
 
                         # Baixa as imagens mais recentes construídas pelo Jenkins
                         echo "Baixando novas versões das imagens..."
-                        docker-compose pull
+                        docker compose pull
                         
                         # Sobe os serviços com as novas imagens em modo detached (-d)
                         echo "Iniciando os contêineres..."
-                        docker-compose up -d --remove-orphans
+                        docker compose up -d --remove-orphans
                         
                         echo "Deploy finalizado com sucesso!"
 
@@ -74,3 +73,4 @@ EOF
         }
     }
 }
+
