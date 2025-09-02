@@ -58,8 +58,8 @@ pipeline {
                         docker-compose up -d --remove-orphans
                         
                         echo "Deploy finalizado com sucesso!"
-                        
-                        EOF
+
+EOF
                     '''
                 }
             }
@@ -74,5 +74,3 @@ pipeline {
         }
     }
 }
-
-
