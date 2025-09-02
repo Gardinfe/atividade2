@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // CORREÇÃO: Sintaxe da variável corrigida
         DOCKERHUB_USER = 'gardinfernando'
     }
 
@@ -38,20 +37,16 @@ pipeline {
                 }
             }
         }
-        // --- ESTÁGIO FINAL DE IMPLANTAÇÃO ---
         stage('Deploy (Implantação)') {
             steps {
                 echo 'Iniciando o deploy no servidor de destino...'
                 sshagent(credentials: ['servidor-ssh']) { 
-                    // IP da sua máquina local preenchido
+                    // CORREÇÃO FINAL: Usando o usuário 'fernando'
                     sh '''
-                        ssh -o StrictHostKeyChecking=no gardin@192.168.100.6 <<EOF
+                        ssh -o StrictHostKeyChecking=no fernando@192.168.100.6 <<EOF
 
                         # Garante que o repositório com o docker-compose.yml exista
-                        if [ ! -d "atividade2" ]; then
-                            git clone https://github.com/Gardinfe/atividade2.git
-                        fi
-                        cd atividade2
+                        cd ~/Documents/GitHub/Projetos/atividade2
                         git pull
 
                         # Baixa as imagens mais recentes construídas pelo Jenkins
@@ -79,3 +74,5 @@ pipeline {
         }
     }
 }
+
+
