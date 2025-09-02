@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        // CORREÇÃO: Sintaxe da variável corrigida
         DOCKERHUB_USER = 'gardinfernando'
     }
 
@@ -31,8 +32,6 @@ pipeline {
         stage('Entrega (Delivery)') {
             steps {
                 echo 'Enviando imagens para o Docker Hub...'
-                // --- CORREÇÃO APLICADA AQUI ---
-                // Adicionado 'url' e trocado .push() por comandos sh
                 withDockerRegistry(url: 'https://index.docker.io/v1/', credentialsId: 'Docker_hub') {
                     sh "docker push ${DOCKERHUB_USER}/atividade2-web:latest"
                     sh "docker push ${DOCKERHUB_USER}/atividade2-db:latest"
@@ -43,11 +42,10 @@ pipeline {
         stage('Deploy (Implantação)') {
             steps {
                 echo 'Iniciando o deploy no servidor de destino...'
-                // Use o ID da sua credencial SSH cadastrada no Jenkins
-                sshagent(credentials: ['sua-credencial-ssh-aqui']) { 
-                    // Substitua 'usuario@ip-do-servidor' pelos dados reais do seu servidor
+                sshagent(credentials: ['servidor-ssh']) { 
+                    // IP da sua máquina local preenchido
                     sh '''
-                        ssh -o StrictHostKeyChecking=no usuario@ip-do-servidor <<EOF
+                        ssh -o StrictHostKeyChecking=no gardin@192.168.100.6 <<EOF
 
                         # Garante que o repositório com o docker-compose.yml exista
                         if [ ! -d "atividade2" ]; then
@@ -81,4 +79,3 @@ pipeline {
         }
     }
 }
-
