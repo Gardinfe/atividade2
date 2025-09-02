@@ -44,19 +44,16 @@ pipeline {
                     sh '''
                         ssh -o StrictHostKeyChecking=no fernando@192.168.100.6 <<EOF
 
-                        # Garante que o repositório com o docker-compose.yml exista
-                        cd ~/Documents/GitHub/Projetos/atividade2
-                        git pull
-
-                        # Baixa as imagens mais recentes construídas pelo Jenkins
-                        echo "Baixando novas versões das imagens..."
-                        docker compose pull
-                        
-                        # Sobe os serviços com as novas imagens em modo detached (-d)
-                        echo "Iniciando os contêineres..."
-                        docker compose up -d --remove-orphans
-                        
-                        echo "Deploy finalizado com sucesso!"
+                        # Encadeia os comandos com && para garantir que o script pare em caso de erro
+                        cd ~/Documents/GitHub/Projetos/atividade2 && \\
+                        git pull && \\
+                        echo "--- Verificando arquivos no diretório ---" && \\
+                        ls -la && \\
+                        echo "--- Baixando novas versões das imagens ---" && \\
+                        docker compose pull && \\
+                        echo "--- Iniciando os contêineres ---" && \\
+                        docker compose up -d --remove-orphans && \\
+                        echo "--- Deploy finalizado com sucesso! ---"
 
 EOF
                     '''
@@ -73,4 +70,3 @@ EOF
         }
     }
 }
-
